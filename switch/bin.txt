@@ -1,0 +1,22 @@
+  HTTPClient http;
+  BearSSL::WiFiClientSecure client;
+  client.setInsecure();
+  http.begin(client,"https://adafruit.io/api/v2/dotrar/feeds/esp-check/data/retain");
+  http.addHeader("X-AIO-Key", "aio_AFKD86nnO0wRIY51oaAUB67uz4qc");
+  http.addHeader("Content-Type", "application/json");
+  http.setFollowRedirects(true);
+  int e = http.GET();
+
+  if (e < 1)
+  {
+    Serial.println("error");
+    Serial.println(http.errorToString(e));
+  }
+  else
+  {
+    Serial.print("OK: ");
+    Serial.println(e);
+    http.writeToStream(&Serial);
+  }
+  http.end();
+  Serial.println("----------------------------");

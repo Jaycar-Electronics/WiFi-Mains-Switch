@@ -1,0 +1,96 @@
+#include <ESP8266WiFi.h>
+#include "Adafruit_MQTT.h"
+#include "Adafruit_MQTT_Client.h"
+#include "radio.h"
+
+const short output_pin = D4;
+
+#define ADAFRUIT_USERNAME "dotrar"
+#define ADAFRUIT_AIOKEY "aio_AFKD86nnO0wRIY51oaAUB67uz4qc"
+#define ADAFRUIT_FEED "esp-check"
+
+//  use RADIOSWITCH(n, c):
+// n = switch: 1,2,3,4 or 0 = all;
+// c = mode: 0 off, 1 on.
+
+WiFiClient esp;
+Adafruit_MQTT_Client mqtt(
+    &esp,
+    "io.adafruit.com",
+    1883,
+    ADAFRUIT_USERNAME,
+    ADAFRUIT_AIOKEY);
+
+Adafruit_MQTT_Subscribe switchActivation = Adafruit_MQTT_Subscribe(
+    &mqtt,
+    ADAFRUIT_USERNAME "/feeds/" ADAFRUIT_FEED);
+
+bool state = 0;
+void setup()
+{
+  Serial.begin(115200);
+  setupPins();
+}
+
+void loop()
+{
+  if (state)
+  {
+    Serial.println("Turning switch on");
+  }
+  else
+  {
+    Serial.println("Turning switch off");
+  }
+  radioSwitch(output_pin, 0, state);
+  state = !state;
+  delay(1000); //5 seconds
+}
+// -----------------------------------------------------------
+void setupPins()
+{
+  pinMode(output_pin, OUTPUT);
+}
+void connectWiFi(const char *ssid, const char *password)
+{
+  WiFi.begin(ssid, password);
+  Serial.println("Connecting to network:");
+  Serial.println(ssid);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
+  Serial.println("Connected to WiFi!");
+}
+void reconnectMQTT()
+{
+  Serial.print("Attempting to connect to MQTT... ");
+  short retries = 3;
+  short ret;
+  while (retries > 0)
+  {
+    if (mqtt.connect() == 0)
+    {
+      break;
+    }
+    mqtt.disconnect();
+    Serial.printf("%d.. ", retries);
+    delay(5000);
+    retries--;
+  }
+
+  if (!mqtt.connected()) //still not connected
+  {
+    //hang and wait for WDT to restart
+    Serial.println("Unable to connect to MQTT server");
+    Serial.println("Make sure your details are correct");
+    Serial.println("Restarting soon ...");
+    delay(5000);
+    // this for loop will crash the ESP, causing it to reset
+    for (;;)
+      ;
+  }
+  Serial.println("Connected to MQTT server!");
+}
