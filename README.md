@@ -63,7 +63,7 @@ You could think of it as **IFTTT** manages the **triggers**, where **AIO** manag
 
 ## Assembly
 
-There's 3 main parts below, [Setting up the Services](), [Setting up the ESP8266](), and [Connecting the Services]().
+There's 3 main parts below, [Setting up the Services](#Setting-up-the-services), [Setting up the ESP8266](#Setting-up-the-ESP8266), and [Trying it out](#Trying-it-out).
 
 ### Setting up the services
 
@@ -91,7 +91,7 @@ You could already imagine what this is; you'll need this key to talk to the AIO 
 
 #### IFTTT
 
-Now we can head over to <https://IFTTT.com> and sign up. If you've done projects with this before, this should be second nature and you'll already have an account, so log in or otherwise create an account.
+Now we can head over to <https://IFTTT.com> and sign up. If you've done projects with this before, you'll already have an account which you can log into, or otherwise create an account.
 
 Once you're in, you can click on your profile image in the top right, (next to explore). And click **Create**.
 
@@ -107,7 +107,9 @@ We're going to set it for Jaycar head office, but you can set this to your home 
 
 After you have created this trigger, click the "That" and search for "Adafruit" - you will want to send data to Adafruit IO.
 
-For this part, you need to set some specific data relating to whether you've entered or exited the area. For this, we use the "Entered or Exited" ingredient, which will mean the data fed to the AIO feed ( and thus, to the ESP8266) will be a string with "entered" or "exited". you could also put the time and date in after this if you want.
+For this part, you need to set some specific data relating to whether you've entered or exited the area. For this, we use the "Entered or Exited" ingredient, which will mean the data fed to the AIO feed (and thus, to the ESP8266) will be a string with "entered" or "exited". you could also put the time and date in after this if you want.
+
+**Note:** We put the "Entered/Exited" ingredient first, so we can use String functions such as `String.startsWith()` further down the line. If you put it last in the line, then you'd have to use `String.endsWith()`
 
 Finally, confirm what the trigger is set up to do. You want to send data to `espswitch` (your feed name) when you enter or exited an area.
 
