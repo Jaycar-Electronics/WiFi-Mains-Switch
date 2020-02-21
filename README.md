@@ -103,13 +103,19 @@ You should come to the following page; This should be second nature to you if yo
 
 Click on the 'this' and set up the trigger that you want to set. For instance, we will use the `Location` service, and set it to when we "enter or exit an area"
 
+![location](images/ifttt/location.png)
+
 We're going to set it for Jaycar head office, but you can set this to your home address or your friends address if you want, or any random location which you might enter/exit and want the switch to turn on/off accordingly.
 
 After you have created this trigger, click the "That" and search for "Adafruit" - you will want to send data to Adafruit IO.
 
 For this part, you need to set some specific data relating to whether you've entered or exited the area. For this, we use the "Entered or Exited" ingredient, which will mean the data fed to the AIO feed (and thus, to the ESP8266) will be a string with "entered" or "exited". you could also put the time and date in after this if you want.
 
+![ifttt](images/ifttt/switch.png)
+
 **Note:** We put the "Entered/Exited" ingredient first, so we can use String functions such as `String.startsWith()` further down the line. If you put it last in the line, then you'd have to use `String.endsWith()`
+
+![confirm](images/ifttt/review.png)
 
 Finally, confirm what the trigger is set up to do. You want to send data to `espswitch` (your feed name) when you enter or exited an area.
 
@@ -221,6 +227,10 @@ After all that, we can simply trim them short (We used around 2cm for each wire)
 Here's a picture of our 3D printed case version; If you are using a case, it will fit much much easier if you come up from the underside as shown below.
 
 ![case version](images/case-version.jpg)
+
+To put it in the case; once you have printed it out, you should see that the ESP mounts "upside down" in the case, with a small cavity for the wireless sensor, and the antenna should fit through the hole on the side. We used [WH3032](https://jaycar.com.au/p/WH3032) on our case version so the hole is a little small, you could try increasing the size with a simple model editor (like <https://blender.org> if you want to get real fancy). Use some small M3 screws ([HP0403](https://jaycar.com.au/p/HP0403) and the like) to close up the case.
+
+![snug inside his home](images/in-case.jpg)
 
 ## Trying it out
 
